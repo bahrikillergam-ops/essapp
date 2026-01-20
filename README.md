@@ -1,2 +1,2 @@
 # essapp
-tihs app is for the volley-ball of ess
+tihs app is for the volley-ball team  of ess
