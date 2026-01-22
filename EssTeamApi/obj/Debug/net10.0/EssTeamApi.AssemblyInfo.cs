@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EssTeamApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6a7485263a5ed95c07bfab089a57140d601f0b1b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1fc205c4f99bf6ec1566b45ce4d5878728ad3ebb")]
 [assembly: System.Reflection.AssemblyProductAttribute("EssTeamApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EssTeamApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
