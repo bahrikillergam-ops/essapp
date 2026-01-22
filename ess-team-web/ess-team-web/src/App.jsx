@@ -4,8 +4,8 @@ import { managerService } from './services/api';
 function App() {
   const [managers, setManagers] = useState([]);
 
-  useEffect(() => {
-    // When the page loads, ask the backend for managers
+  // --- NEW: Function to load data from API ---
+  const loadManagers = () => {
     managerService.getAll()
       .then(response => {
         setManagers(response.data);
@@ -13,7 +13,26 @@ function App() {
       .catch(error => {
         console.error("The API is not answering!", error);
       });
+  };
+
+  useEffect(() => {
+    loadManagers(); // Load data when page opens
   }, []);
+
+  // --- NEW: Function to delete a manager ---
+  const handleDelete = (id) => {
+    if (window.confirm("Are you sure you want to delete this manager?")) {
+      managerService.delete(id)
+        .then(() => {
+          alert("Manager deleted successfully!");
+          loadManagers(); // Refresh the table so the person disappears
+        })
+        .catch(error => {
+          console.error("Delete failed:", error);
+          alert("Could not delete. Check your backend!");
+        });
+    }
+  };
 
   return (
     <div style={{ padding: '40px', fontFamily: 'sans-serif' }}>
@@ -27,7 +46,9 @@ function App() {
               <th>First Name</th>
               <th>Last Name</th>
               <th>Role</th>
+              <th>Phone</th>
               <th>Email</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -38,6 +59,14 @@ function App() {
                 <td>{m.role}</td>
                 <td>{m.phone}</td>
                 <td>{m.email}</td>
+                <td>
+                  <button 
+                    onClick={() => handleDelete(m.managerId)} 
+                    style={{ backgroundColor: '#ff4d4d', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '4px', cursor: 'pointer' }}
+                  >
+                    Delete
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>

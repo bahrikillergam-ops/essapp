@@ -10,6 +10,7 @@ const api = axios.create({
 export const managerService = {
   // This function "calls" the backend to get the manager list
   getAll: () => api.get('/managers'),
+  delete: (id) => api.delete(`/managers/${id}`),
 };
 
 export default api;
