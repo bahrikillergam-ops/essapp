@@ -27,6 +27,11 @@ function App() {
   };
 
   useEffect(() => { loadData(); }, [currentSection]);
+  
+  const getItemId = (item) => {
+    if (!item) return null;
+    return item.id || item.playerId || item.managerId || item.matchId || item.trainingId || item.equipmentId;
+  };
 
   const handleSave = async (formData) => {
     try {
