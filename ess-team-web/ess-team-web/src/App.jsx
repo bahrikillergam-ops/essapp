@@ -17,7 +17,7 @@ function App() {
   const [currentSection, setCurrentSection] = useState('players');
   const [list, setList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState(null); // Tracks if we are updating
+  const [editingItem, setEditingItem] = useState(null);
 
   const loadData = async () => {
     try {
@@ -28,23 +28,18 @@ function App() {
 
   useEffect(() => { loadData(); }, [currentSection]);
 
-  // Handle both Create and Update
   const handleSave = async (formData) => {
     try {
       const id = editingItem?.id || editingItem?.playerId || editingItem?.managerId;
-      
       if (editingItem) {
         await genericService(currentSection).update(id, formData);
       } else {
         await genericService(currentSection).create(formData);
       }
-      
       setIsModalOpen(false);
       setEditingItem(null);
       loadData();
-    } catch (err) {
-      alert("Error saving data. Check if Manager ID exists!");
-    }
+    } catch (err) { alert("Action failed. Check Manager ID."); }
   };
 
   const openEditModal = (item) => {
@@ -53,9 +48,11 @@ function App() {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm("Delete this record?")) {
-      await genericService(currentSection).delete(id);
-      loadData();
+    if (window.confirm("Are you sure you want to delete this record?")) {
+      try {
+        await genericService(currentSection).delete(id);
+        loadData();
+      } catch (err) { alert("Delete failed."); }
     }
   };
 
@@ -66,13 +63,18 @@ function App() {
   return (
     <div className="ess-container">
       <aside className="ess-sidebar">
-        <div className="sidebar-brand">
-          <img src="/logo_letoile-removebg-preview (1).png" alt="ESS" className="sidebar-logo" />
-          <h1>ESS VOLLEY</h1>
+        <div className="sidebar-header">
+          <img src="assets/logo-ess.png" alt="ESS" className="sidebar-logo" />
+          <h2 className="club-title">Étoile Sportive du Sahel <br/> Volley Ball</h2>
         </div>
-        <nav>
+        
+        <nav className="sidebar-nav">
           {SECTIONS.map(s => (
-            <button key={s} className={currentSection === s ? 'nav-item active' : 'nav-item'} onClick={() => setCurrentSection(s)}>
+            <button 
+              key={s} 
+              className={`nav-link ${currentSection === s ? 'active' : ''}`} 
+              onClick={() => setCurrentSection(s)}
+            >
               {s.toUpperCase()}
             </button>
           ))}
@@ -80,26 +82,28 @@ function App() {
       </aside>
 
       <main className="ess-main">
-        <header className="ess-header">
-          <h2>{currentSection.toUpperCase()}</h2>
-          <button className="btn-add" onClick={() => { setEditingItem(null); setIsModalOpen(true); }}>+ ADD NEW</button>
+        <header className="main-header">
+          <h1 className="section-title">{currentSection.toUpperCase()}</h1>
+          <button className="btn-add-main" onClick={() => { setEditingItem(null); setIsModalOpen(true); }}>
+            + NEW {currentSection.slice(0, -1).toUpperCase()}
+          </button>
         </header>
 
-        <div className="ess-card">
+        <div className="table-card">
           <table className="ess-table">
             <thead>
               <tr>
                 {columns.map(col => <th key={col}>{col.toUpperCase()}</th>)}
-                <th>ACTIONS</th>
+                <th style={{textAlign: 'center'}}>ACTIONS</th>
               </tr>
             </thead>
             <tbody>
               {list.map((item, i) => (
                 <tr key={i}>
                   {columns.map(col => <td key={col}>{String(item[col] ?? '')}</td>)}
-                  <td className="action-btns">
-                    <button className="btn-edit" onClick={() => openEditModal(item)}>Edit</button>
-                    <button className="btn-del" onClick={() => handleDelete(item.id || item.playerId || item.managerId)}>Delete</button>
+                  <td className="action-cell">
+                    <button className="btn-edit-action" onClick={() => openEditModal(item)}>Edit</button>
+                    <button className="btn-del-action" onClick={() => handleDelete(item.id || item.playerId || item.managerId)}>Delete</button>
                   </td>
                 </tr>
               ))}

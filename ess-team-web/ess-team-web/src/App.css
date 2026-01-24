@@ -1,138 +1,119 @@
-/* ESS Team Management - Global Theme */
 :root {
   --ess-red: #cc0000;
-  --ess-dark: #1a1a1a;
   --ess-white: #ffffff;
-  --ess-gray: #f4f4f4;
+  --ess-bg: #fdfdfd;
 }
 
-.ess-dashboard {
-  display: flex;
-  min-height: 100vh;
-  background-color: var(--ess-gray);
-}
+.ess-container { display: flex; min-height: 100vh; background: var(--ess-bg); }
 
+/* SIDEBAR */
 .ess-sidebar {
-  width: 260px;
-  background-color: var(--ess-red);
+  width: 280px;
+  background: var(--ess-red);
   color: white;
-  padding: 20px;
   position: fixed;
   height: 100vh;
-  box-shadow: 4px 0 10px rgba(0,0,0,0.1);
-}
-
-.logo-ess {
-  width: 100px;
-  margin: 0 auto 20px;
-  display: block;
-}
-
-.nav-links {
-  list-style: none;
-  padding: 0;
-  margin-top: 30px;
-}
-
-.nav-links li {
-  padding: 12px 15px;
-  margin-bottom: 8px;
-  cursor: pointer;
-  border-radius: 6px;
-  transition: 0.3s;
-  font-weight: 500;
-  text-transform: uppercase;
-}
-
-.nav-links li.active, .nav-links li:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-}
-
-.ess-main {
-  margin-left: 260px;
-  padding: 40px;
-  width: calc(100% - 260px);
-}
-
-.main-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
-  background: white;
   padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  box-shadow: 2px 0 10px rgba(0,0,0,0.1);
 }
 
-.btn-add {
-  background-color: var(--ess-red);
+.sidebar-logo {
+  width: 70px; /* Smaller logo as requested */
+  display: block;
+  margin: 0 auto 15px;
+}
+
+.club-title {
+  font-size: 0.9rem;
+  text-align: center;
+  line-height: 1.4;
+  margin-bottom: 40px;
+  font-weight: 600;
+}
+
+.sidebar-nav { display: flex; flex-direction: column; gap: 10px; }
+
+.nav-link {
+  background: none;
+  border: none;
+  color: white;
+  text-align: left;
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: 0.3s;
+}
+
+.nav-link:hover, .nav-link.active {
+  background: rgba(255, 255, 255, 0.15);
+  padding-left: 30px;
+}
+
+/* TABLE */
+.ess-main { margin-left: 280px; padding: 40px; width: 100%; }
+
+.table-container {
+  background: white;
+  border: 1px solid #ddd; /* Table Border */
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.ess-table { width: 100%; border-collapse: collapse; }
+.ess-table th { background: var(--ess-red); color: white; padding: 15px; text-align: left; border: 1px solid #bb0000; }
+.ess-table td { padding: 15px; border: 1px solid #eee; }
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex; justify-content: center; align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  border-top: 10px solid var(--ess-red);
+  width: 500px;
+}
+
+.modal-title { color: var(--ess-red); margin-bottom: 25px; text-align: center; }
+
+/* SPACING BETWEEN LABEL AND INPUT */
+.form-row { margin-bottom: 20px; display: flex; flex-direction: column; gap: 8px; }
+
+.form-label { font-size: 0.8rem; font-weight: bold; color: #555; }
+
+.form-input {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+/* BUTTONS */
+.modal-actions { display: flex; gap: 15px; margin-top: 30px; }
+
+.btn-modal-submit {
+  flex: 2;
+  background: var(--ess-red);
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
+  padding: 12px;
+  border-radius: 30px; /* Beautiful rounded buttons */
   font-weight: bold;
   cursor: pointer;
 }
 
-/* Table Styling */
-.table-card {
+.btn-modal-cancel {
+  flex: 1;
   background: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  overflow-x: auto;
-}
-
-.dynamic-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.dynamic-table th {
-  background: var(--ess-dark);
-  color: white;
-  padding: 12px;
-  text-align: left;
-}
-
-.dynamic-table td {
-  padding: 12px;
-  border-bottom: 1px solid #eee;
-}
-
-.btn-delete {
+  border: 2px solid var(--ess-red);
   color: var(--ess-red);
-  border: 1px solid var(--ess-red);
-  background: transparent;
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-.action-btns {
-  display: flex;
-  gap: 8px;
-}
-
-.btn-edit {
-  background: #333;
-  color: white;
-  border: none;
-  padding: 5px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.btn-edit:hover {
-  background: #555;
-}
-
-.btn-del {
-  color: var(--ess-red);
-  border: 1px solid var(--ess-red);
-  background: none;
-  padding: 5px 12px;
-  border-radius: 4px;
+  padding: 12px;
+  border-radius: 30px;
+  font-weight: bold;
   cursor: pointer;
 }
