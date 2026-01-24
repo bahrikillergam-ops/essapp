@@ -64,7 +64,7 @@ function App() {
     <div className="ess-container">
       <aside className="ess-sidebar">
         <div className="sidebar-header">
-          <img src="assets/logo-ess.png" alt="ESS" className="sidebar-logo" />
+         <img src="src/assets/logo-ess.png" alt="ESS Logo" className="sidebar-logo" />
           <h2 className="club-title">Étoile Sportive du Sahel <br/> Volley Ball</h2>
         </div>
         
