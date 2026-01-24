@@ -48,19 +48,22 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 // 7. Hangfire Dashboard (Access this at /hangfire)
-app.UseHangfireDashboard();
+app.UseHangfireDashboard(); 
 
 // 8. Schedule the Daily SMS Reminder
 using (var scope = app.Services.CreateScope())
 {
     var recurringJobManager = scope.ServiceProvider.GetRequiredService<IRecurringJobManager>();
-    // This calls the SMS logic every day at 9:00 AM
+    var smsService = scope.ServiceProvider.GetRequiredService<SmsService>();
+
+    // This schedules the job in the database
     recurringJobManager.AddOrUpdate(
         "SendDailyReminders", 
-        () => scope.ServiceProvider.GetRequiredService<SmsService>().SendScheduledReminders(), 
+        () => smsService.SendScheduledReminders(), 
         Cron.Daily(9)
     );
 }
+
 
 app.MapControllers();
 app.Run();

@@ -1,42 +1,138 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* ESS Team Management - Global Theme */
+:root {
+  --ess-red: #cc0000;
+  --ess-dark: #1a1a1a;
+  --ess-white: #ffffff;
+  --ess-gray: #f4f4f4;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.ess-dashboard {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--ess-gray);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.ess-sidebar {
+  width: 260px;
+  background-color: var(--ess-red);
+  color: white;
+  padding: 20px;
+  position: fixed;
+  height: 100vh;
+  box-shadow: 4px 0 10px rgba(0,0,0,0.1);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.logo-ess {
+  width: 100px;
+  margin: 0 auto 20px;
+  display: block;
 }
 
-.card {
-  padding: 2em;
+.nav-links {
+  list-style: none;
+  padding: 0;
+  margin-top: 30px;
 }
 
-.read-the-docs {
-  color: #888;
+.nav-links li {
+  padding: 12px 15px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: 0.3s;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.nav-links li.active, .nav-links li:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.ess-main {
+  margin-left: 260px;
+  padding: 40px;
+  width: calc(100% - 260px);
+}
+
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.btn-add {
+  background-color: var(--ess-red);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Table Styling */
+.table-card {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  overflow-x: auto;
+}
+
+.dynamic-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.dynamic-table th {
+  background: var(--ess-dark);
+  color: white;
+  padding: 12px;
+  text-align: left;
+}
+
+.dynamic-table td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.btn-delete {
+  color: var(--ess-red);
+  border: 1px solid var(--ess-red);
+  background: transparent;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.action-btns {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-edit {
+  background: #333;
+  color: white;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-edit:hover {
+  background: #555;
+}
+
+.btn-del {
+  color: var(--ess-red);
+  border: 1px solid var(--ess-red);
+  background: none;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
 }

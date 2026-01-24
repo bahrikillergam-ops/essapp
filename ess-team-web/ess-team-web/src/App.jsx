@@ -1,79 +1,120 @@
 import { useEffect, useState } from 'react';
-import { managerService } from './services/api';
+import { genericService } from './services/api';
+import DynamicModal from './components/DynamicModal';
+import './App.css';
+
+const SECTIONS = ['players', 'managers', 'matches', 'trainings', 'equipment'];
+
+const BLUEPRINTS = {
+  players: { firstName: "", lastName: "", position: "", jerseyNumber: 0, phone: "", email: "", managerId: 1 },
+  managers: { firstName: "", lastName: "", role: "", phone: "", email: "" },
+  matches: { matchDate: "", opponent: "", location: "", result: "", managerId: 1 },
+  trainings: { trainingDate: "", time: "", location: "", focus: "", managerId: 1 },
+  equipment: { equipmentName: "", quantity: 0, condition: "", managerId: 1 }
+};
 
 function App() {
-  const [managers, setManagers] = useState([]);
+  const [currentSection, setCurrentSection] = useState('players');
+  const [list, setList] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingItem, setEditingItem] = useState(null); // Tracks if we are updating
 
-  // --- NEW: Function to load data from API ---
-  const loadManagers = () => {
-    managerService.getAll()
-      .then(response => {
-        setManagers(response.data);
-      })
-      .catch(error => {
-        console.error("The API is not answering!", error);
-      });
+  const loadData = async () => {
+    try {
+      const response = await genericService(currentSection).getAll();
+      setList(response.data);
+    } catch (error) { setList([]); }
   };
 
-  useEffect(() => {
-    loadManagers(); // Load data when page opens
-  }, []);
+  useEffect(() => { loadData(); }, [currentSection]);
 
-  // --- NEW: Function to delete a manager ---
-  const handleDelete = (id) => {
-    if (window.confirm("Are you sure you want to delete this manager?")) {
-      managerService.delete(id)
-        .then(() => {
-          alert("Manager deleted successfully!");
-          loadManagers(); // Refresh the table so the person disappears
-        })
-        .catch(error => {
-          console.error("Delete failed:", error);
-          alert("Could not delete. Check your backend!");
-        });
+  // Handle both Create and Update
+  const handleSave = async (formData) => {
+    try {
+      const id = editingItem?.id || editingItem?.playerId || editingItem?.managerId;
+      
+      if (editingItem) {
+        await genericService(currentSection).update(id, formData);
+      } else {
+        await genericService(currentSection).create(formData);
+      }
+      
+      setIsModalOpen(false);
+      setEditingItem(null);
+      loadData();
+    } catch (err) {
+      alert("Error saving data. Check if Manager ID exists!");
     }
   };
 
+  const openEditModal = (item) => {
+    setEditingItem(item);
+    setIsModalOpen(true);
+  };
+
+  const handleDelete = async (id) => {
+    if (window.confirm("Delete this record?")) {
+      await genericService(currentSection).delete(id);
+      loadData();
+    }
+  };
+
+  const columns = list.length > 0 
+    ? Object.keys(list[0]).filter(key => typeof list[0][key] !== 'object' && list[0][key] !== null)
+    : Object.keys(BLUEPRINTS[currentSection]);
+
   return (
-    <div style={{ padding: '40px', fontFamily: 'sans-serif' }}>
-      <h1 style={{ color: '#0078d4' }}>ESS Team Management</h1>
-      <h2>Managers List</h2>
-      
-      {managers.length > 0 ? (
-        <table border="1" cellPadding="10" style={{ width: '100%', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr style={{ backgroundColor: '#f2f2f2' }}>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Role</th>
-              <th>Phone</th>
-              <th>Email</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {managers.map(m => (
-              <tr key={m.managerId}>
-                <td>{m.firstName}</td>
-                <td>{m.lastName}</td>
-                <td>{m.role}</td>
-                <td>{m.phone}</td>
-                <td>{m.email}</td>
-                <td>
-                  <button 
-                    onClick={() => handleDelete(m.managerId)} 
-                    style={{ backgroundColor: '#ff4d4d', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '4px', cursor: 'pointer' }}
-                  >
-                    Delete
-                  </button>
-                </td>
+    <div className="ess-container">
+      <aside className="ess-sidebar">
+        <div className="sidebar-brand">
+          <img src="/logo_letoile-removebg-preview (1).png" alt="ESS" className="sidebar-logo" />
+          <h1>ESS VOLLEY</h1>
+        </div>
+        <nav>
+          {SECTIONS.map(s => (
+            <button key={s} className={currentSection === s ? 'nav-item active' : 'nav-item'} onClick={() => setCurrentSection(s)}>
+              {s.toUpperCase()}
+            </button>
+          ))}
+        </nav>
+      </aside>
+
+      <main className="ess-main">
+        <header className="ess-header">
+          <h2>{currentSection.toUpperCase()}</h2>
+          <button className="btn-add" onClick={() => { setEditingItem(null); setIsModalOpen(true); }}>+ ADD NEW</button>
+        </header>
+
+        <div className="ess-card">
+          <table className="ess-table">
+            <thead>
+              <tr>
+                {columns.map(col => <th key={col}>{col.toUpperCase()}</th>)}
+                <th>ACTIONS</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      ) : (
-        <p>Connecting to backend... If this stays empty, make sure your .NET API is running!</p>
-      )}
+            </thead>
+            <tbody>
+              {list.map((item, i) => (
+                <tr key={i}>
+                  {columns.map(col => <td key={col}>{String(item[col] ?? '')}</td>)}
+                  <td className="action-btns">
+                    <button className="btn-edit" onClick={() => openEditModal(item)}>Edit</button>
+                    <button className="btn-del" onClick={() => handleDelete(item.id || item.playerId || item.managerId)}>Delete</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <DynamicModal 
+          isOpen={isModalOpen}
+          onClose={() => { setIsModalOpen(false); setEditingItem(null); }}
+          onSave={handleSave}
+          sectionName={currentSection}
+          templateItem={editingItem || BLUEPRINTS[currentSection]}
+        />
+      </main>
     </div>
   );
 }
