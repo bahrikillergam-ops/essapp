@@ -117,3 +117,58 @@
   font-weight: bold;
   cursor: pointer;
 }
+.btn-add-main {
+  background: var(--ess-red);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(204, 0, 0, 0.3);
+  transition: 0.3s;
+}
+
+.btn-add-main:hover { transform: translateY(-2px); background: #b30000; }
+
+/* TABLE REFINEMENTS */
+.table-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  overflow: hidden;
+  border: 1px solid #eee;
+}
+
+.ess-table { width: 100%; border-collapse: collapse; }
+.ess-table th { background: #f8f9fa; color: #666; padding: 18px; text-align: left; font-size: 0.75rem; border-bottom: 2px solid #eee; }
+.ess-table td { padding: 16px; border-bottom: 1px solid #f1f1f1; font-size: 0.9rem; color: #444; }
+
+/* ACTION BUTTONS IN TABLE */
+.action-cell { display: flex; gap: 10px; justify-content: center; }
+
+.btn-edit-action {
+  background: #fdfdfd;
+  color: #333;
+  border: 1px solid #ddd;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-edit-action:hover { background: #eee; border-color: #999; }
+
+.btn-del-action {
+  background: #fff5f5;
+  color: var(--ess-red);
+  border: 1px solid #ffcccc;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-del-action:hover { background: var(--ess-red); color: white; border-color: var(--ess-red); }
